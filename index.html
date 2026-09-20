@@ -98,6 +98,13 @@ h1{
   cursor:pointer
 }
 
+.btn.secondary{
+  background:transparent;
+  color:var(--accent);
+  border:1px solid var(--accent);
+  margin-left:10px
+}
+
 section{padding:80px 6%}
 
 .section-title{
@@ -146,6 +153,16 @@ ul{
 
 li{margin:8px 0}
 
+.info-card{
+  text-align:center
+}
+
+.info-card .big{
+  font-size:26px;
+  font-weight:800;
+  margin:10px 0
+}
+
 .booking{background:#0d1218}
 
 .form{
@@ -184,6 +201,26 @@ textarea{
   margin-top:20px
 }
 
+#successMessage{
+  display:none;
+  max-width:700px;
+  background:var(--card);
+  border:1px solid var(--accent);
+  border-radius:16px;
+  padding:30px;
+  text-align:center
+}
+
+#successMessage h3{
+  color:var(--accent);
+  font-size:25px;
+  margin-top:0
+}
+
+#successMessage p{
+  color:var(--muted)
+}
+
 footer{
   border-top:1px solid var(--line);
   padding:30px 6%;
@@ -210,6 +247,10 @@ footer{
 
   section{
     padding:60px 5%
+  }
+
+  .btn.secondary{
+    margin-left:0
   }
 }
 </style>
@@ -238,6 +279,7 @@ footer{
     </p>
 
     <a class="btn" href="#book">Book a clean</a>
+    <a class="btn secondary" href="tel:0493997675">Call Now</a>
   </div>
 </header>
 
@@ -298,6 +340,37 @@ footer{
       <h3>Interior + Exterior</h3>
       <div class="price">$50</div>
       <p>A proper clean inside and out.</p>
+    </div>
+
+  </div>
+</section>
+
+<section id="location">
+
+  <div class="section-title">
+    <div class="eyebrow">Where we operate</div>
+    <h2>Serving Phillip Island.</h2>
+    <p>Shine Auto Detailing provides mobile car cleaning across Phillip Island.</p>
+  </div>
+
+  <div class="grid">
+
+    <div class="card info-card">
+      <div class="eyebrow">Service Area</div>
+      <div class="big">Phillip Island Only</div>
+      <p>We come to you anywhere on Phillip Island.</p>
+    </div>
+
+    <div class="card info-card">
+      <div class="eyebrow">Find Us</div>
+      <div class="big">Phillip Island</div>
+      <a
+        class="btn"
+        href="https://www.google.com/maps/search/?api=1&query=Phillip+Island+Victoria"
+        target="_blank"
+      >
+        View on Google Maps
+      </a>
     </div>
 
   </div>
@@ -367,20 +440,68 @@ footer{
 
   </form>
 
+  <div id="successMessage">
+    <h3>Booking request sent!</h3>
+    <p>
+      Thanks for booking with Shine Auto Detailing.
+      We'll contact you to confirm the details.
+    </p>
+    <a class="btn" href="#book">Make another booking</a>
+  </div>
+
 </section>
 
 <footer>
 
   <div>
     <strong>SHINE AUTO DETAILING</strong><br>
-    Clean cars. Simple pricing.
+    Clean cars. Simple pricing.<br>
+    Phillip Island only.
   </div>
 
   <div>
+    <a
+      href="tel:0493997675"
+      style="color:var(--accent);text-decoration:none;"
+    >
+      0493 997 675
+    </a>
+    <br>
     © 2026 Shine Auto Detailing
   </div>
 
 </footer>
+
+<script>
+const form = document.getElementById("bookingForm");
+const successMessage = document.getElementById("successMessage");
+
+form.addEventListener("submit", async function(e){
+  e.preventDefault();
+
+  const button = form.querySelector("button");
+  button.textContent = "Sending...";
+  button.disabled = true;
+
+  const response = await fetch(form.action, {
+    method: "POST",
+    body: new FormData(form),
+    headers: {
+      "Accept": "application/json"
+    }
+  });
+
+  if (response.ok) {
+    form.style.display = "none";
+    successMessage.style.display = "block";
+    form.reset();
+  } else {
+    button.textContent = "Request booking";
+    button.disabled = false;
+    alert("Something went wrong. Please try again.");
+  }
+});
+</script>
 
 </body>
 </html>
